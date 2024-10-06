@@ -22,8 +22,7 @@ builder.Services.AddControllersWithViews();
 
 // Add Default Identity for UserModel (your custom user model)
 builder.Services.AddDefaultIdentity<UserModel>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Add DbContext for SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

@@ -20,8 +20,8 @@ namespace JJTMS_IT16.Data
             }
 
             // Define admin user details
-            string adminEmail = "admin@admin.com";
-            string adminPassword = "Admin@123";
+            string adminEmail = "admin@jjtms.com";
+            string adminPassword = "Admin123!";
 
             // Check if the admin user already exists
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
@@ -41,6 +41,12 @@ namespace JJTMS_IT16.Data
                     // Assign Admin role to the user
                     await userManager.AddToRoleAsync(newAdminUser, "Admin");
                 }
+            }
+            else
+            {
+                // Reset password if user already exists
+                var token = await userManager.GeneratePasswordResetTokenAsync(adminUser);
+                await userManager.ResetPasswordAsync(adminUser, token, adminPassword);
             }
         }
     }
