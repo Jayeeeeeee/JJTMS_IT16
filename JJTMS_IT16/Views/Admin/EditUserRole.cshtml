@@ -1,0 +1,22 @@
+﻿@model EditUserRoleModel
+@{
+    ViewData["Title"] = "Edit User Role";
+}
+
+<h2>Edit Role for @Model.Email</h2>
+
+<form asp-action="EditUserRole" method="post">
+    <input type="hidden" name="UserId" value="@Model.UserId" />
+    <div class="form-group">
+        <label for="SelectedRole">Role</label>
+        <select name="SelectedRole" class="form-control">
+            @foreach (var role in Model.Roles)
+            {
+                var selected = role.Name == Model.SelectedRole ? "selected" : "";
+
+                <option value="@role.Name"selected>@role.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Role</button>
+</form>

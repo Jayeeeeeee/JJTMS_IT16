@@ -1,4 +1,5 @@
-﻿using JJTMS_IT16.Models;
+﻿using JJTMS_IT16.Data;
+using JJTMS_IT16.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
