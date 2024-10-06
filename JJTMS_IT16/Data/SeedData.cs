@@ -5,39 +5,41 @@ namespace JJTMS_IT16.Data
 {
     public static class SeedData
     {
-        public static async Task Initialize(RoleManager<IdentityRole> roleManager, UserManager<UserModel> userManager)
+        public static async Task Initialize(IServiceProvider serviceProvider, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            // Ensure roles are created
             string[] roleNames = { "Admin", "Team Leader", "Team Member" };
-            IdentityResult roleResult;
 
             foreach (var roleName in roleNames)
             {
                 var roleExist = await roleManager.RoleExistsAsync(roleName);
                 if (!roleExist)
                 {
-                    // Create the roles
-                    roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
 
-            // Create a default Admin user if it doesn't exist
-            var adminEmail = "admin@jjtms.com";
-            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+            // Define admin user details
+            string adminEmail = "admin@admin.com";
+            string adminPassword = "Admin@123";
 
+            // Check if the admin user already exists
+            var adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)
             {
-                var user = new UserModel
+                // Create the admin user
+                var newAdminUser = new IdentityUser
                 {
                     UserName = adminEmail,
                     Email = adminEmail,
                     EmailConfirmed = true
                 };
 
-                string adminPassword = "Admin123!"; // Change to a secure password
-                var createAdminUser = await userManager.CreateAsync(user, adminPassword);
-                if (createAdminUser.Succeeded)
+                var createAdmin = await userManager.CreateAsync(newAdminUser, adminPassword);
+                if (createAdmin.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, "Admin");
+                    // Assign Admin role to the user
+                    await userManager.AddToRoleAsync(newAdminUser, "Admin");
                 }
             }
         }
